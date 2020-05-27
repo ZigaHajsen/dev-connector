@@ -26,7 +26,7 @@ router.post(
         text: req.body.text,
         name: user.name,
         avatar: user.avatar,
-        user: req.user.id
+        user: req.user.id,
       });
 
       const post = await newPost.save();
@@ -74,7 +74,6 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    // Check user
     if (post.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
@@ -96,7 +95,6 @@ router.put('/like/:id', [auth, checkObjectId('id')], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    // Check if the post has already been liked
     if (post.likes.some((like) => like.user.toString() === req.user.id)) {
       return res.status(400).json({ msg: 'Post already liked' });
     }
@@ -119,12 +117,10 @@ router.put('/unlike/:id', [auth, checkObjectId('id')], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    // Check if the post has not yet been liked
     if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
       return res.status(400).json({ msg: 'Post has not yet been liked' });
     }
 
-    // remove the like
     post.likes = post.likes.filter(
       ({ user }) => user.toString() !== req.user.id
     );
@@ -146,7 +142,7 @@ router.post(
   [
     auth,
     checkObjectId('id'),
-    [check('text', 'Text is required').not().isEmpty()]
+    [check('text', 'Text is required').not().isEmpty()],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -162,7 +158,7 @@ router.post(
         text: req.body.text,
         name: user.name,
         avatar: user.avatar,
-        user: req.user.id
+        user: req.user.id,
       };
 
       post.comments.unshift(newComment);
@@ -184,15 +180,14 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    // Pull out comment
     const comment = post.comments.find(
       (comment) => comment.id === req.params.comment_id
     );
-    // Make sure comment exists
+
     if (!comment) {
       return res.status(404).json({ msg: 'Comment does not exist' });
     }
-    // Check user
+
     if (comment.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
