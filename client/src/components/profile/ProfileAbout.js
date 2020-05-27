@@ -5,8 +5,8 @@ const ProfileAbout = ({
   profile: {
     bio,
     skills,
-    user: { name }
-  }
+    user: { name },
+  },
 }) => (
   <div className='profile-about bg-light p-2'>
     {bio && (
@@ -28,7 +28,7 @@ const ProfileAbout = ({
 );
 
 ProfileAbout.propTypes = {
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
 };
 
 export default ProfileAbout;
