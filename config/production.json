@@ -1,0 +1,5 @@
+{
+  "mongoURI": "mongodb+srv://ZigaHajsen:nemejebat4ever98@devconnector-eppex.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken",
+  "githubToken": "fc5605390db92610772e67bdd2081651b6f82534"
+}
